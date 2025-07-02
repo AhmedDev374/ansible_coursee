@@ -1,32 +1,35 @@
 ---
+
 - hosts: all
   tasks:
-  - name: install repo cache (CentOS)
+  - name: install updates (CentOS)
     tags: always
     yum:
-#      update_only: yes
+      update_only: yes
       update_cache: yes
     when: ansible_distribution == "CentOS"
-    changed_when: false
 
-  - name: install repo cahce (Ubuntu)
-    become: true
+  - name: install updates (Ubuntu)
     tags: always
     apt:
-#      upgrade: dist
+      upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
-    changed_when: false
 
 - hosts: all
   tasks:
 
+  - name: create simone user
+    tags: always
+    user:
+      name: simone
+      group: root
   - name: add ssh key for simone
     tags: always
     authorized_key:
       user: simone
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICXp2cAgGqSQBmdDymgco4YKg11gMmw5mmnmSAgb4jKq ansible"
-
+      key: ""
+  - name
 - hosts: workstations
   tasks:
   - name: install unzip
@@ -34,7 +37,6 @@
       name: unzip
 
   - name: install terrraform
-    become: true
     unarchive:
       src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
       dest: /usr/local/bin
@@ -46,7 +48,6 @@
 - hosts: web_servers
   pre_tasks:
   - name: install apache and php for ubunut servers
-    become: true
     tags: apache,apache2,ubuntu
     apt:
       name:
@@ -56,7 +57,6 @@
     when: ansible_distribution == "Ubuntu"
 
   - name: install apache and php for centos servers
-    become: true
     tags: apache,centos,httpd
     yum:
       name:
@@ -109,4 +109,3 @@
     shell: smbd &
     async: 5
     poll: 0
-

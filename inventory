@@ -1,3 +1,12 @@
-172.17.0.4
-172.17.0.3
-172.17.0.2
+[web_servers]
+172.19.0.3 #server1
+172.19.0.4 #server2
+
+[db_servers]
+172.19.0.5 #server3
+
+[file_server]
+172.19.0.6 #centos
+
+[workstations]
+172.19.0.2 #Work_Station
